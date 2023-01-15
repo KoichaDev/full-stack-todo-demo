@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import {
 	getAllTodo,
 	createTodo,
@@ -6,7 +6,7 @@ import {
 	deleteTodo,
 } from './todo.controller.js';
 
-const todoRouter = express.Router();
+const todoRouter: Router = express.Router();
 
 todoRouter.get('/', getAllTodo);
 todoRouter.post('/', createTodo);

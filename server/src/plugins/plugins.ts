@@ -7,7 +7,7 @@ dotenv.config();
 
 const plugins = express();
 const corsOptions = {
-	origin: `http://localhost:${process.env.PORT || 8000}`,
+	origin: `http://localhost:${process.env.REACT_PORT || 8000}`,
 };
 
 plugins.use(helmet());
