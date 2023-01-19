@@ -3,19 +3,19 @@ import { Request, Response } from 'express';
 type typeTodo = {
 	id: number;
 	todo: string;
-	complete: boolean;
+	completed: boolean;
 };
 
 const todo: typeTodo[] = [
 	{
 		id: 0,
 		todo: 'Learn TypeScript',
-		complete: false,
+		completed: false,
 	},
 	{
 		id: 1,
 		todo: 'Learn Node',
-		complete: true,
+		completed: true,
 	},
 ];
 
