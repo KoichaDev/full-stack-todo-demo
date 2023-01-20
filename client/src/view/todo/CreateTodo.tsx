@@ -1,11 +1,22 @@
 import React, { useId, useState } from 'react';
 import { useMutationCreateTodo } from './hooks/useTodos';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+type mutationData = {
+	error: any;
+	isError: boolean;
+	isSuccess: boolean;
+	mutate: Function;
+};
 
 const CreateTodo = () => {
 	const labelId = useId();
 
-	const mutation = useMutationCreateTodo();
-	const { isSuccess } = mutation;
+	const mutation: mutationData = useMutationCreateTodo();
+	const { isSuccess, isError, error } = mutation;
+
+	console.log(isSuccess);
 
 	const [enteredTodo, setEnteredTodo] = useState('');
 
@@ -25,19 +36,33 @@ const CreateTodo = () => {
 		setEnteredTodo(enteredText);
 	};
 
+	if (isError) {
+		toast.error(error.message, {
+			position: 'top-center',
+		});
+	}
+
+	if (isSuccess) {
+		toast('success!', { position: 'top-center' });
+	}
+
 	return (
-		<form onSubmit={onSubmitHandler}>
-			<label htmlFor={`enter todo ${labelId}`}></label>
+		<>
+			<ToastContainer />
 
-			<input
-				type='text'
-				id={`enter todo ${labelId}`}
-				value={enteredTodo}
-				onChange={enteredTodoHandler}
-			/>
+			<form onSubmit={onSubmitHandler}>
+				<label htmlFor={`enter todo ${labelId}`}></label>
 
-			<button>Submit</button>
-		</form>
+				<input
+					type='text'
+					id={`enter todo ${labelId}`}
+					value={enteredTodo}
+					onChange={enteredTodoHandler}
+				/>
+
+				<button>Submit</button>
+			</form>
+		</>
 	);
 };
 
