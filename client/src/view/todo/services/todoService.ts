@@ -1,18 +1,25 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
+import { todosProps } from '../types/todo.types';
 import api from '@/api/axiosInstance';
 
-export const fetchTodos = () => {
-	return api.get('todo');
+const BASE_URL = {
+	fetchTodo: 'todo',
+	createTodo: 'todo',
+	updateCompletedTodo: (id: string) => `todo/${id}`,
 };
 
-export const createTodo = (postTodo: any) => {
-	const queryClient = useQueryClient();
+export const fetchTodos = () => {
+	return api.get(BASE_URL.fetchTodo);
+};
 
-	const mutation = useMutation({
-		mutationFn: postTodo,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['todos'] });
-		},
+export const createTodo = (payload: todosProps) => {
+	return api.post(BASE_URL.createTodo, payload);
+};
+
+export const updateCompletedTodo = (payload: todosProps) => {
+	const { id, completed } = payload;
+	const todoId = id.toString();
+
+	return api.put(BASE_URL.updateCompletedTodo(todoId), {
+		completed,
 	});
 };

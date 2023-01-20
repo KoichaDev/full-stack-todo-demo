@@ -1,12 +1,7 @@
 import { useFetchTodos } from './hooks/useTodos';
+import { todosProps } from './types/todo.types';
+import CreateTodo from './CreateTodo';
 import EditTodo from './EditTodo';
-import DisplayTodos from './render-props/DisplayTodos';
-
-type TodoType = {
-	id: number;
-	todo: string;
-	completed: boolean;
-};
 
 const ViewTodo = () => {
 	const { data, isLoading, isError } = useFetchTodos();
@@ -21,13 +16,13 @@ const ViewTodo = () => {
 
 	return (
 		<>
-			<EditTodo />
+			<CreateTodo />
 
 			<h1>Todo List</h1>
 
-			{data?.data.map((todo: TodoType) => {
+			{data?.data.map((todo: todosProps) => {
 				return (
-					<DisplayTodos
+					<EditTodo
 						key={todo.id}
 						{...todo}
 					/>

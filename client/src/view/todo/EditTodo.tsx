@@ -1,32 +1,29 @@
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
+import { todosProps } from './types/todo.types';
 
-const EditTodo = () => {
-	const labelId = useId();
+const EditTodo = ({ text, completed }: todosProps) => {
+	const [todoCompleted, setTodoCompleted] = useState(completed);
+	const checkboxId = useId();
 
-	const [enteredTodo, setEnteredTodo] = useState('');
+	const completedValue = todoCompleted ? 'true' : 'false';
 
-	const onSubmitHandler = (e: React.FormEvent) => {
-		e.preventDefault();
-	};
-
-	const enteredTodoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const enteredText = e.target.value;
-		setEnteredTodo(enteredText);
+	const toggleCompletedHandler = () => {
+		setTodoCompleted((prevTodo) => !prevTodo);
 	};
 
 	return (
-		<form onSubmit={onSubmitHandler}>
-			<label htmlFor={`enter todo ${labelId}`}></label>
-
-			<input
-				type='text'
-				id={`enter todo ${labelId}`}
-				value={enteredTodo}
-				onChange={enteredTodoHandler}
-			/>
-
-			<button>Submit</button>
-		</form>
+		<ul>
+			<li>{text}</li>
+			<li>
+				<label htmlFor={checkboxId}>{completedValue}</label>
+				<input
+					type='checkbox'
+					value={completedValue}
+					onChange={toggleCompletedHandler}
+					id={checkboxId}
+				/>
+			</li>
+		</ul>
 	);
 };
 
