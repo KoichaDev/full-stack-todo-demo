@@ -2,44 +2,65 @@ import { Request, Response } from 'express';
 
 type typeTodo = {
 	id: number;
-	todo: string;
+	text: string;
 	completed: boolean;
 };
 
-const todo: typeTodo[] = [
+let latestTodo = 2;
+
+const todos: typeTodo[] = [
 	{
 		id: 0,
-		todo: 'Learn TypeScript',
+		text: 'Learn TypeScript',
 		completed: false,
 	},
 	{
 		id: 1,
-		todo: 'Learn Node',
+		text: 'Learn Node',
 		completed: true,
 	},
 ];
 
 export const getAllTodo = (_, res: Response) => {
-	res.status(200).json(todo);
+	res.status(200).json(todos);
 };
 
 export const createTodo = (req: Request, res: Response) => {
 	const newTodo = req.body;
+	const { id, text, completed } = newTodo;
 
-	todo.push(newTodo);
+	if (text === '') {
+		return res.status(400).json({
+			error: 'Missing entered todo',
+		});
+	}
 
-	res.status(201).json(todo);
+	if (!completed) {
+		return res.status(400).json({
+			error: 'missing todo is completed or not',
+		});
+	}
+
+	latestTodo = latestTodo + 1;
+
+	todos.push({
+		id: latestTodo,
+		text,
+		completed,
+	});
+
+	res.status(201).json(text);
 };
 
 export const updateTodo = (req: Request, res: Response) => {
 	const id = req.params.id;
 	const updateTodo = req.body;
 
-	const findTodo = todo.find((todo) => todo.id === +id);
+	const findTodo = todos.find((todo) => todo.id === +id);
 	if (!!findTodo) {
-		const todoIndex = todo.findIndex((todo) => todo.id === +id);
+		const todoIndex = todos.findIndex((todo) => todo.id === +id);
 
-		todo[todoIndex] = updateTodo;
+		todos[todoIndex] = updateTodo;
 
 		res.status(200).json({
 			status: 'success',
@@ -55,12 +76,12 @@ export const updateTodo = (req: Request, res: Response) => {
 export const deleteTodo = (req: Request, res: Response) => {
 	const id: number = +req.params.id;
 
-	const findTodo = todo.find((todo) => todo.id === id);
+	const findTodo = todos.find((todo) => todo.id === id);
 
 	if (!!findTodo) {
-		const todoIndex = todo.findIndex((todo) => todo.id === id);
+		const todoIndex = todos.findIndex((todo) => todo.id === id);
 
-		todo.splice(todoIndex, 1);
+		todos.splice(todoIndex, 1);
 
 		res.status(200).json({
 			status: 'success',
