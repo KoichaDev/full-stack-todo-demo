@@ -19,7 +19,7 @@ export const useMutationCreateTodo = () => {
 export const useUpdateTodos = () => {
 	const queryClient = useQueryClient();
 
-	const mutation = useMutation({
+	return useMutation({
 		mutationFn: updateCompletedTodo,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['todos'] });
